@@ -63,31 +63,28 @@ require("inlay-hints").setup({
 
 > > You should make sure that the LSP you are using supported inlay hints
 
-### lua_ls
+### basedpyright
 
-Default inlay hints for [`lua-language-server`](https://github.com/LuaLS/lua-language-server)
+Default inlay hints for [`basedpyright`](https://github.com/DetachHead/basedpyright)
+When you configure inlay hint correctly, the basedpyright's feature will be automatically enabled.
 
 ```lua
 return {
   settings = {
-    Lua = {
-      hint = {
-        enable = true,
-        arrayIndex = "Enable",
-        await = true,
-        paramName = "All",
-        paramType = true,
-        semicolon = "SameLine",
-        setType = true,
-      },
-    },
-  },
+    basedpyright = {
+      analysis = {
+        autoSearchPaths = true,
+        diagnosticMode = "openFilesOnly",
+        useLibraryCodeForTypes = true
+      }
+    }
+  }
 }
 ```
 
 ### clangd
 
-If you're using `p00f/clangd_extensions.nvim`, please set `autoSetHints = false`
+If you're using [`p00f/clangd_extensions.nvim`](https://github.com/p00f/clangd_extensions.nvim), please set `autoSetHints = false`
 
 Default inlay hints for [`clangd`](https://github.com/clangd/clangd)
 
@@ -128,6 +125,25 @@ return {
 }
 ```
 
+### eclipse.jdt.ls
+
+Default inlay hints for [`eslipse.jdt.ls`](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
+
+```lua
+return {
+  settings = {
+    java = {
+      inlayHints = {
+        parameterNames = {
+          enabled = "all",
+          exclusions = { "this" },
+        },
+      },
+    }
+  }
+}
+```
+
 ### gopls
 
 Default inlay hints for [`gopls`](https://pkg.go.dev/golang.org/x/tools/gopls)
@@ -146,6 +162,89 @@ return {
         functionTypeParameters = true,
       },
     }
+  }
+}
+```
+
+### kotlin-language-server
+
+Default inlay hints for [`kotlin-language-server`](https://github.com/fwcd/kotlin-language-server)
+
+```lua
+return {
+  settings = {
+    kotlin = {
+      hints = {
+        typeHints = true,
+        parameterHints = true,
+        chainedHints = true,
+      },
+    },
+  }
+}
+
+```
+
+### pylyzer
+
+Default inlay hints for [`pylyzer`](https://github.com/mtshiba/pylyzer)
+
+```lua
+return {
+  settings = {
+    python = {
+      inlayHints = true
+    }
+  }
+}
+```
+
+### lua_ls
+
+Default inlay hints for [`lua-language-server`](https://github.com/LuaLS/lua-language-server)
+
+```lua
+return {
+  settings = {
+    Lua = {
+      hint = {
+        enable = true,
+        arrayIndex = "Enable",
+        await = true,
+        paramName = "All",
+        paramType = true,
+        semicolon = "SameLine",
+        setType = true,
+      },
+    },
+  },
+}
+```
+
+### OmniSharp
+
+Default inlay hints for [`OmniSharp`](https://github.com/OmniSharp/omnisharp-roslyn)
+~~might work~~
+
+```lua
+return {
+  settings = {
+    RoslynExtensionsOptions = {
+        InlayHintsOptions = {
+        EnableForParameters = true,
+        ForLiteralParameters = true,
+        ForIndexerParameters = true,
+        ForObjectCreationParameters = true,
+        ForOtherParameters = true,
+        SuppressForParametersThatDifferOnlyBySuffix = false,
+        SuppressForParametersThatMatchMethodIntent = false,
+        SuppressForParametersThatMatchArgumentName = false,
+        EnableForTypes = true,
+        ForImplicitVariableTypes = true,
+        ForLambdaParameterTypes = true,
+        ForImplicitObjectCreatio = true,
+      },
+    },
   }
 }
 ```
@@ -195,9 +294,31 @@ return {
 }
 ```
 
+### svelte-language-server
+
+Default inlay hints for [`svelte-language-server`](https://github.com/sveltejs/language-tools)
+
+```lua
+return {
+  settings = {
+    typescript = {
+      inlayHints = {
+        parameterNames = { enabled = 'all' },
+        parameterTypes = { enabled = true },
+        variableTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        enumMemberValues = { enabled = true },
+      },
+    },
+  },
+}
+```
+
 ### typescript-language-server (tsserver)
 
-If you're using `pmizio/typescript-tools.nvim`, you enable it like this
+If you're using
+[`pmizio/typescript-tools.nvim`](https://github.com/pmizio/typescript.nvim), you enable it like this
 
 ```lua
 require("typescript-tools").setup({
@@ -246,27 +367,6 @@ return {
       },
     },
   }
-}
-```
-
-### svelte-language-server
-
-Default inlay hints for [`svelte-language-server`](https://github.com/sveltejs/language-tools)
-
-```lua
-return {
-  settings = {
-    typescript = {
-      inlayHints = {
-        parameterNames = { enabled = 'all' },
-        parameterTypes = { enabled = true },
-        variableTypes = { enabled = true },
-        propertyDeclarationTypes = { enabled = true },
-        functionLikeReturnTypes = { enabled = true },
-        enumMemberValues = { enabled = true },
-      },
-    },
-  },
 }
 ```
 
@@ -350,105 +450,6 @@ return {
       inlay_hints_exclude_single_argument = true,
       inlay_hints_hide_redundant_param_names = false,
       inlay_hints_hide_redundant_param_names_last_token = false,
-    },
-  }
-}
-```
-
-### basedpyright
-
-Default inlay hints for [`basedpyright`](https://github.com/DetachHead/basedpyright)
-When you configure inlay hint correctly, the basedpyright's feature will be automatically enabled.
-
-```lua
-return {
-  settings = {
-    basedpyright = {
-      analysis = {
-        autoSearchPaths = true,
-        diagnosticMode = "openFilesOnly",
-        useLibraryCodeForTypes = true
-      }
-    }
-  }
-}
-```
-
-### pylyzer
-
-Default inlay hints for [`pylyzer`](https://github.com/mtshiba/pylyzer)
-
-```lua
-return {
-  settings = {
-    python = {
-      inlayHints = true
-    }
-  }
-}
-```
-
-### kotlin-language-server
-
-Default inlay hints for [`kotlin-language-server`](https://github.com/fwcd/kotlin-language-server)
-
-```lua
-return {
-  settings = {
-    kotlin = {
-      hints = {
-        typeHints = true,
-        parameterHints = true,
-        chainedHints = true,
-      },
-    },
-  }
-}
-
-```
-
-### eclipse.jdt.ls
-
-Default inlay hints for [`eslipse.jdt.ls`](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
-
-```lua
-return {
-  settings = {
-    java = {
-      inlayHints = {
-        parameterNames = {
-          enabled = "all",
-          exclusions = { "this" },
-        },
-      },
-    }
-  }
-}
-```
-
-### OmniSharp
-
-Default inlay hints for [`OmniSharp`](https://github.com/OmniSharp/omnisharp-roslyn)
-~~might work~~
-
-```lua
-return {
-  settings = {
-    RoslynExtensionsOptions = {
-        InlayHintsOptions = {
-        EnableForParameters = true,
-        ForLiteralParameters = true,
-        ForIndexerParameters = true,
-        ForObjectCreationParameters = true,
-        ForOtherParameters = true,
-        SuppressForParametersThatDifferOnlyBySuffix = false,
-        SuppressForParametersThatMatchMethodIntent = false,
-        SuppressForParametersThatMatchArgumentName = false,
-        EnableForTypes = true,
-        ForImplicitVariableTypes = true,
-        ForLambdaParameterTypes = true,
-        ForImplicitObjectCreatio = true,
-      },
     },
   }
 }
