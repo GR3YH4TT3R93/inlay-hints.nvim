@@ -78,3 +78,8 @@ require("inlay-hints").setup({
 - [`vtsls`](https://github.com/yioneko/vtsls) - [configuration](./LANGUAGES.md#vtsls)
 - [`vue_ls`](https://github.com/vuejs/language-tools) - [configuration](./LANGUAGES.md#vue)
 - [`zls`](https://github.com/zigtools/zls) - [configuration](./LANGUAGES.md#zls)
+
+## Contributing ♻️
+
+Contributions are welcome! Please open an issue or submit a pull request with
+the relevant changes and documentation.
