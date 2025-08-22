@@ -3,22 +3,22 @@
 A plugin to simplify enabling neovim offical [inlay hints](https://github.com/neovim/neovim/pull/23426)
 
 > [!IMPORTANT]
-> This is a VERY SIMPLE plugin. I just integrated how to enable the inlay hint of each LSP.
+> This will enable ALL inlay hints for a given LSP.
 
 ## Installation
 
-Add `MysticalDevil/inlay-hints.nvim` using your favorite plugin manager, like this:
+Add `GR3YH4TT3R/inlay-hints.nvim` using your favorite plugin manager, like this:
 
 [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
 require("lazy").setup({
-    "MysticalDevil/inlay-hints.nvim",
+    "GR3YH4TT3R/inlay-hints.nvim",
     event = "LspAttach",
     dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-        require("inlay-hints").setup()
-    end
+    opts = {
+      -- your settings here (same as calling `require("inlay-hints").setup()`)
+    }
 })
 ```
 
@@ -26,7 +26,7 @@ require("lazy").setup({
 
 ```lua
 require("pckr").add({
-    "MysticalDevil/inlay-hints.nvim",
+    "GR3YH4TT3R/inlay-hints.nvim",
     requires = { "neovim/nvim-lspconfig" },
     config = function()
         require("inlay-hints").setup()
@@ -61,34 +61,38 @@ require("inlay-hints").setup({
 
 ## Languages
 
-The inlay hints is not enabled by default, so you need the following settings, use [`nvim-lspconfig`](https://github.com/neovim/nvim-lspconfig)
-
 > > You should make sure that the LSP you are using supported inlay hints
 
 ### lua_ls
 
-Here's how to enable inlay hints for [`lua-language-server`](https://github.com/LuaLS/lua-language-server)
+Default inlay hints for [`lua-language-server`](https://github.com/LuaLS/lua-language-server)
 
 ```lua
-require("lspconfig").lua_ls.setup({
+return {
   settings = {
     Lua = {
       hint = {
-        enable = true, -- necessary
-      }
-    }
-  }
-})
+        enable = true,
+        arrayIndex = "Enable",
+        await = true,
+        paramName = "All",
+        paramType = true,
+        semicolon = "SameLine",
+        setType = true,
+      },
+    },
+  },
+}
 ```
 
 ### clangd
 
 If you're using `p00f/clangd_extensions.nvim`, please set `autoSetHints = false`
 
-Here's how to enable inlay hints for [`clangd`](https://github.com/clangd/clangd)
+Default inlay hints for [`clangd`](https://github.com/clangd/clangd)
 
 ```lua
-require("lspconfig").clangd.setup({
+return {
   settings = {
     clangd = {
       InlayHints = {
@@ -100,15 +104,15 @@ require("lspconfig").clangd.setup({
       fallbackFlags = { "-std=c++20" },
     },
   }
-})
+}
 ```
 
 ### denols
 
-Here's how to enable inlay hints for [`denols`](https://github.com/denoland/deno/blob/main/cli/lsp)
+Default inlay hints for [`denols`](https://github.com/denoland/deno/blob/main/cli/lsp)
 
 ```lua
-require("lspconfig").denols.setup({
+return {
   settings = {
     deno = {
       inlayHints = {
@@ -121,16 +125,15 @@ require("lspconfig").denols.setup({
       },
     }
   }
-})
+}
 ```
-
 
 ### gopls
 
-Here's how to enable inlay hints for [`gopls`](https://pkg.go.dev/golang.org/x/tools/gopls)
+Default inlay hints for [`gopls`](https://pkg.go.dev/golang.org/x/tools/gopls)
 
 ```lua
-require("lspconfig").gopls.setup({
+return {
   settings = {
     gopls = {
       hints = {
@@ -144,60 +147,15 @@ require("lspconfig").gopls.setup({
       },
     }
   }
-})
+}
 ```
 
 ### rust-analyzer
 
-If you're using `mrcjkb/rustaceanvim`, you can enable it like
+Default inlay hints for [`rust-analyzer`](https://github.com/rust-lang/rust-analyzer) (Compatible with [`mrcjkb/rustaceanvim`](https://github.com/mrcjkb/rustaceanvim))
 
 ```lua
-vim.g.rustaceanvim = {
-  server = {
-    settings = {
-      ["rust-analyzer"] = {
-        inlayHints = {
-          bindingModeHints = {
-            enable = false,
-          },
-          chainingHints = {
-            enable = true,
-          },
-          closingBraceHints = {
-            enable = true,
-            minLines = 25,
-          },
-          closureReturnTypeHints = {
-            enable = "never",
-          },
-          lifetimeElisionHints = {
-            enable = "never",
-            useParameterNames = false,
-          },
-          maxLength = 25,
-          parameterHints = {
-            enable = true,
-          },
-          reborrowHints = {
-            enable = "never",
-          },
-          renderColons = true,
-          typeHints = {
-            enable = true,
-            hideClosureInitialization = false,
-            hideNamedConstructor = false,
-          },
-        },
-      },
-    },
-  },
-}
-```
-
-Here's how to enable inlay hints for [`rust-analyzer`](https://github.com/rust-lang/rust-analyzer)
-
-```lua
-require("lspconfig").rust_analyzer.setup({
+return {
   settings = {
     ["rust-analyzer"] = {
       inlayHints = {
@@ -234,7 +192,7 @@ require("lspconfig").rust_analyzer.setup({
       },
     }
   }
-})
+}
 ```
 
 ### typescript-language-server (tsserver)
@@ -258,10 +216,10 @@ require("typescript-tools").setup({
 })
 ```
 
-Here's how to enable inlay hints for [`tsserver`](<https://github.com/microsoft/TypeScript/wiki/Standalone-Server-(tsserver)>)
+Default inlay hints for [`tsserver`](<https://github.com/microsoft/TypeScript/wiki/Standalone-Server-(tsserver)>)
 
 ```lua
-require("lspconfig").tsserver.setup({
+return {
   settings = {
     typescript = {
       inlayHints = {
@@ -288,15 +246,15 @@ require("lspconfig").tsserver.setup({
       },
     },
   }
-})
+}
 ```
 
 ### svelte-language-server
 
-Here's how to enable inlay hints for [`svelte-language-server`](https://github.com/sveltejs/language-tools)
+Default inlay hints for [`svelte-language-server`](https://github.com/sveltejs/language-tools)
 
 ```lua
-require('lspconfig').svelte.setup {
+return {
   settings = {
     typescript = {
       inlayHints = {
@@ -314,24 +272,65 @@ require('lspconfig').svelte.setup {
 
 ### vtsls
 
-Here's how to enable inlay hints for [`vtsls`](https://github.com/yioneko/vtsls)
+Default inlay hints for [`vtsls`](https://github.com/yioneko/vtsls)
 
-> contribute by [`lucicoreyli`](https://github.com/lucioreyli)
+> Original contribution by [`lucicoreyli`](https://github.com/lucioreyli)
+> updated by [`GR3YH4TT3R`](https://github.com/GR3YH4TT3R)
 
 ```lua
-require('lspconfig').vtsls.setup {
-  -- capabilities = capabilities,
-  -- flags = lsp_flags,
-  -- on_attach = on_attach,
+return {
   settings = {
     typescript = {
       inlayHints = {
-        parameterNames = { enabled = 'all' },
-        parameterTypes = { enabled = true },
         variableTypes = { enabled = true },
-        propertyDeclarationTypes = { enabled = true },
-        functionLikeReturnTypes = { enabled = true },
+        parameterNames = { enabled = "all" },
         enumMemberValues = { enabled = true },
+        functionLikeReturnTypes = { enabled = true },
+        propertyDeclarationTypes = { enabled = true },
+        parameterTypes = {
+          enabled = true,
+          suppressWhenArgumentMatchesName = false,
+        },
+      },
+    },
+  },
+}
+```
+
+### Vue
+
+Default inlay hints for [`vue_ls`](https://github.com/vuejs/language-tools)
+
+```lua
+return {
+  settings = {
+    typescript = {
+      inlayHints = {
+        enumMemberValues = {
+          enabled = true,
+        },
+        functionLikeReturnTypes = {
+          enabled = true,
+        },
+        propertyDeclarationTypes = {
+          enabled = true,
+        },
+        parameterTypes = {
+          enabled = true,
+          suppressWhenArgumentMatchesName = true,
+        },
+        variableTypes = {
+          enabled = true,
+        },
+      },
+    },
+    vue = {
+      inlayHints = {
+        destructuredProps = true,
+        inlineHandlerLoading = true,
+        missingProps = true,
+        optionsWrapper = true,
+        vBindShorthand = true,
       },
     },
   },
@@ -340,10 +339,10 @@ require('lspconfig').vtsls.setup {
 
 ### zls
 
-Here's how to enable inlay hints for [`zls`](https://github.com/zigtools/zls)
+Default inlay hints for [`zls`](https://github.com/zigtools/zls)
 
 ```lua
-require("lspconfig").zls.setup({
+return {
   settings = {
     zls = {
       enable_inlay_hints = true,
@@ -353,16 +352,16 @@ require("lspconfig").zls.setup({
       inlay_hints_hide_redundant_param_names_last_token = false,
     },
   }
-})
+}
 ```
 
 ### basedpyright
 
-Here's how to enable inlay hints for [`basedpyright`](https://github.com/DetachHead/basedpyright)
+Default inlay hints for [`basedpyright`](https://github.com/DetachHead/basedpyright)
 When you configure inlay hint correctly, the basedpyright's feature will be automatically enabled.
 
 ```lua
-require('lspconfig').basedpyright.setup({
+return {
   settings = {
     basedpyright = {
       analysis = {
@@ -372,48 +371,48 @@ require('lspconfig').basedpyright.setup({
       }
     }
   }
-})
+}
 ```
 
 ### pylyzer
 
-Here's how to enable inlay hints for [`pylyzer`](https://github.com/mtshiba/pylyzer)
+Default inlay hints for [`pylyzer`](https://github.com/mtshiba/pylyzer)
 
 ```lua
-require("lspconfig").pylyzer.setup({
+return {
   settings = {
     python = {
       inlayHints = true
     }
   }
-})
+}
 ```
 
 ### kotlin-language-server
 
-Here's how to enable inlay hints for [`kotlin-language-server`](https://github.com/fwcd/kotlin-language-server)
+Default inlay hints for [`kotlin-language-server`](https://github.com/fwcd/kotlin-language-server)
 
 ```lua
-require("lspconfig").kotlin_language_server.setup({
+return {
   settings = {
     kotlin = {
       hints = {
         typeHints = true,
         parameterHints = true,
-        chaineHints = true,
+        chainedHints = true,
       },
     },
   }
-})
+}
 
 ```
 
 ### eclipse.jdt.ls
 
-Here's how to enable inlay hints for [`eslipse.jdt.ls`](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
+Default inlay hints for [`eslipse.jdt.ls`](https://github.com/eclipse-jdtls/eclipse.jdt.ls)
 
 ```lua
-require("lspconfig").jdtls.setup({
+return {
   settings = {
     java = {
       inlayHints = {
@@ -424,16 +423,16 @@ require("lspconfig").jdtls.setup({
       },
     }
   }
-})
+}
 ```
 
 ### OmniSharp
 
-Here's how to enable inlay hints for [`OmniSharp`](https://github.com/OmniSharp/omnisharp-roslyn)
+Default inlay hints for [`OmniSharp`](https://github.com/OmniSharp/omnisharp-roslyn)
 ~~might work~~
 
 ```lua
-require("lspconfig").omnisharp.setup({
+return {
   settings = {
     RoslynExtensionsOptions = {
         InlayHintsOptions = {
@@ -452,5 +451,5 @@ require("lspconfig").omnisharp.setup({
       },
     },
   }
-})
+}
 ```
