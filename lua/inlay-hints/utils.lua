@@ -68,11 +68,14 @@ function M.enable_inlay_hints_autocmd()
 end
 
 function M.toggle_inlay_hints()
-  if inlay_hint.is_enabled() then
-    inlay_hint.enable(false, nil)
-  else
-    inlay_hint.enable(true, nil)
-  end
+  local bufnr = vim.api.nvim_get_current_buf()
+  local current_state = inlay_hint.is_enabled({ bufnr = bufnr })
+  local new_state = not current_state
+
+  inlay_hint.enable(new_state, { bufnr = bufnr })
+
+  local status = new_state and "enabled" or "disabled"
+  vim.notify("Inlay hints " .. status, vim.log.levels.INFO)
 end
 
 function M.enable_inlay_hints()
